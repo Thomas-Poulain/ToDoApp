@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meteo</title>
+    <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="src/css/style.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <div id="container">
+      
+        <div id="topBar">
+          <button id="deleteAll" @click.prevent="deleteAll">🗑</button>
+        </div>
+        <div id="button">
+          <button id="validate">Validate</button>
+        </div>
+      
+      </div>
+
+      <div id="form">
+        <form>
+          <input type="text" id="desc" required v-model="desc">
+          <input type="date" id="start" required v-model="dateStart">
+          <input type="date" id="end" required v-model="dateEnd">
+          
+          <select name="progress" id ="progressSelect" v-model="progress">
+            <option value="inProgress">In progress</option>
+            <option value="todo">TODO</option>
+            <option value="closed">Closed</option>
+          </select>
+          
+          <select name="priority" id ="pioritySelect" v-model="priority">
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+          </select>
+
+          <button @click.prevent="addTask">Add</button>
+        </form>         
+      </div>
+
+      <div id="taskList">
+          <template v-for=" task in tasks">
+            <div class="card-bottom px-8 py-4 row">
+              <p v-bind:value="task">
+                {{task.desc}}
+                {{task.dateStart}}
+                {{task.dateEnd}}
+                {{task.progress}}
+                {{task.priority}}
+              </p>
+            </div>
+          </template>  
+        </div>
+    </div>
+
+  </body>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script type="text/javascript" src="src/js/toDoList.js"></script>
+</html>
+
+
