@@ -3,16 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meteo</title>
+    <title>ToDO App</title>
     <link
         rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="src/css/style.css" />
   </head>
 
   <body>
-    <div class="app">
+    <div class="app justify-content-center container">
       <div id="container">
       
         <div id="topBar">
@@ -29,38 +30,70 @@
           <input type="text" id="desc" required v-model="desc">
           <input type="date" id="start" required v-model="dateStart">
           <input type="date" id="end" required v-model="dateEnd">
-          
-          <select name="progress" id ="progressSelect" v-model="progress">
-            <option value="inProgress">In progress</option>
-            <option value="todo">TODO</option>
-            <option value="closed">Closed</option>
-          </select>
-          
-          <select name="priority" id ="pioritySelect" v-model="priority">
-            <option value="low">Low Priority</option>
-            <option value="medium">Medium Priority</option>
-            <option value="high">High Priority</option>
-          </select>
-
-          <button @click.prevent="addTask">Add</button>
+          <button @click.prevent="deleteCompleted">Add</button>
         </form>         
       </div>
+      <div class="row d-flex justify-content-center container">
+          <div class="col-20">
+            <div class="card-hover-shadow-2x mb-3 card rounded">
+              <div class="card-header-tab card-header">
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
+                  <i class="fa fa-tasks"></i>&nbsp;Task Lists</div>
+                    <div class = "center">
+                      <select name="progress" id ="progressSelect" v-model="progress">
+                        <option value="In progress">In progress</option>
+                        <option value="TODO">TODO</option>
+                        <option value="Closed">Closed</option>
+                      </select>
+                      
+                      <select name="priority" id ="pioritySelect" v-model="priority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium">Medium Priority</option>
+                        <option value="high">High Priority</option>
+                      </select>
+                    </div>
+              </div>
 
-      <div id="taskList">
-          <template v-for=" task in tasks">
-            <div class="card-bottom px-8 py-4 row">
-              <p v-bind:value="task">
-                {{task.desc}}
-                {{task.dateStart}}
-                {{task.dateEnd}}
-                {{task.progress}}
-                {{task.priority}}
-              </p>
+              <!---Template card-->
+              <div class="scroll-area-sm ">
+                <perfect-scrollbar class="ps-show-limits">
+                  <div style="position: static;" class="ps ps--active-y">
+                    <div class="ps-content">
+                      <ul class=" list-group list-group-flush">
+
+                        <!---Template task-->
+                        <li v-for="(task, index) in tasks" class="list-group-item">
+                          <div class="todo-indicator bg-warning"></div>
+                          <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                              <div class="widget-content-left taskCol">
+                                <div class="">{{task.desc}}
+                                  <div class="badge badge-danger ml-2">Rejected</div>
+                                </div>
+                              </div>
+                              <div class="widget-content-right">
+                                <button class="border-0 btn-transition btn btn-outline-success">
+                                  <i class="fa fa-check"></i>
+                                </button>
+                                <button class="border-0 btn-transition btn btn-outline-danger"  @click="removeTask(index)">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>  
+                  </div>
+                </perfect-scrollbar>
+              </div>
+              <div class="d-block text-right card-footer"><button class="mr-2 btn btn-link btn-sm">Cancel</button>
+                <button class="btn btn-primary">Add Task</button>
+              </div>
             </div>
-          </template>  
+          </div>
         </div>
     </div>
-
   </body>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script type="text/javascript" src="src/js/toDoList.js"></script>
