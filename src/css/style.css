@@ -148,12 +148,17 @@ i {
     background-color: #3ac47d;
     border-color: #3ac47d;
 }
-
-.btn-outline-success:hover {
+.btn-outline-warning:hover {
     color: #fff;
-    background-color: #3ac47d;
-    border-color: #3ac47d;
+    background-color: #fab801;
+    border-color: #fab801;
 }
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #b80101;
+    border-color: #b80101;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #3f6ad8;

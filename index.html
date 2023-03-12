@@ -4,54 +4,94 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToDO App</title>
-    <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
     <link rel="stylesheet" href="src/css/style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
   </head>
 
   <body>
-    <div class="app justify-content-center container">
-      <div id="container">
-      
-        <div id="topBar">
-          <button id="deleteAll" @click.prevent="deleteAll">🗑</button>
-        </div>
-        <div id="button">
-          <button id="validate">Validate</button>
-        </div>
-      
-      </div>
+    <div class="app justify-content-center container">  
 
-      <div id="form">
-        <form>
-          <input type="text" id="desc" required v-model="desc">
-          <input type="date" id="start" required v-model="dateStart">
-          <input type="date" id="end" required v-model="dateEnd">
-          <button @click.prevent="deleteCompleted">Add</button>
-        </form>         
+
+    <!-- Modal: Deal with the adding task popup -->
+    <div class="modal fade" id="formModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New task</h5>
+            <button class="btn-close" data-mdb-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              Description:
+              <input type="text" id="desc" required v-model="desc"><br>
+              Start date:
+              <input type="date" id="start" required v-model="dateStart"><br>
+              End date:
+              <input type="date" id="end" required v-model="dateEnd"><br>
+              Priority:
+              <select name="priority" id ="pioritySelect" v-model="priority">
+                <option value="Low priority">Low Priority</option>
+                <option value="Medium priority">Medium Priority</option>
+                <option value="High priority">High Priority</option>
+              </select><br>
+              Progress:
+              <select name="progress" id ="progressSelect" v-model="progress">
+                <option selected value="TODO">TODO</option>
+                <option value="In progress">In progress</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </form>         
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+            <button class="btn btn-primary" @click.prevent="addTask" data-mdb-dismiss="modal">Add task</button>
+          </div>
+        </div>
       </div>
-      <div class="row d-flex justify-content-center container">
+    </div>
+      
+      <div class="justify-content-center container-fluid">
           <div class="col-20">
-            <div class="card-hover-shadow-2x mb-3 card rounded">
-              <div class="card-header-tab card-header">
-                <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                  <i class="fa fa-tasks"></i>&nbsp;Task Lists</div>
-                    <div class = "center">
-                      <select name="progress" id ="progressSelect" v-model="progress">
-                        <option value="In progress">In progress</option>
-                        <option value="TODO">TODO</option>
-                        <option value="Closed">Closed</option>
-                      </select>
-                      
-                      <select name="priority" id ="pioritySelect" v-model="priority">
-                        <option value="low">Low Priority</option>
-                        <option value="medium">Medium Priority</option>
-                        <option value="high">High Priority</option>
-                      </select>
-                    </div>
+            <div class="card-hover-shadow-2x card rounded">
+              <div class="widget-content">
+                <div class="card-header-tab card-header widget-content-wrapper">
+                  <div class="col-xs-2 card-header-title font-size-lg text-capitalize font-weight-normal">
+                    <i class="fa fa-tasks"></i>&nbsp;Task List
+                  </div>
+                  <div class="widget-content-left col-7">
+                    <select name="progress" id ="progressSelect" v-model="progressFilter">
+                      <option value=""></option>
+                      <option value="In progress">In progress</option>
+                      <option value="TODO">TODO</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                    
+                    <select name="priority" id ="pioritySelect" v-model="priorityFilter">
+                      <option value=""></option>
+                      <option value="Low priority">Low Priority</option>
+                      <option value="Medium priority">Medium Priority</option>
+                      <option value="High priority">High Priority</option>
+                    </select>
+                    <input type="text" v-model="dateFilter" placeholder="Date">
+                    <input type="text" v-model="keywordFilter" placeholder="Keyword">
+
+                  </div>
+                  <div class="widget-content-right">
+                    <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
+                      Closed
+                      <i class="fa fa-trash"></i>
+                    </button>
+                    <button class="border-0 btn-transition btn btn-outline-danger"  @click="deleteAll">
+                      All
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <!---Template card-->
@@ -62,21 +102,31 @@
                       <ul class=" list-group list-group-flush">
 
                         <!---Template task-->
-                        <li v-for="(task, index) in tasks" class="list-group-item">
-                          <div class="todo-indicator bg-warning"></div>
+                        <li v-for="task in filters" :key="task.id" class="list-group-item">
+                          <div :class="chgProgressColor(task)"></div>
                           <div class="widget-content p-0">
-                            <div class="widget-content-wrapper">
-                              <div class="widget-content-left taskCol">
-                                <div class="">{{task.desc}}
-                                  <div class="badge badge-danger ml-2">Rejected</div>
+                            <div class="widget-content-wrapper ">
+                              <div class="widget-content-left col-8">
+                                <div class="">
+                                  {{task.desc}}
+                                  <div :class="chgPriorityColor(task)">{{task.priority}}</div>
+                                </div>
+                                <div class="row">
+                                  Start: {{task.dateStart}} End:{{task.dateEnd}}
                                 </div>
                               </div>
                               <div class="widget-content-right">
-                                <button class="border-0 btn-transition btn btn-outline-success">
-                                  <i class="fa fa-check"></i>
+                                <button class="border-0 btn-transition btn btn-outline-success" @click="toggleProgress(task)">
+                                  <i class="fa fa-refresh"></i>
+                                  Status
                                 </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger"  @click="removeTask(index)">
+                                <button class="border-0 btn-transition btn btn-outline-warning" @click="togglePriority(task)">
+                                  <i class="fa fa-refresh"></i>
+                                  Priority
+                                </button>
+                                <button class="border-0 btn-transition btn btn-outline-danger"  @click="removeTask(task)">
                                   <i class="fa fa-trash"></i>
+                                  Delete
                                 </button>
                               </div>
                             </div>
@@ -87,8 +137,11 @@
                   </div>
                 </perfect-scrollbar>
               </div>
-              <div class="d-block text-right card-footer"><button class="mr-2 btn btn-link btn-sm">Cancel</button>
-                <button class="btn btn-primary">Add Task</button>
+              <div class="d-block text-right card-footer">
+                    <!-- Button trigger modal -->
+                <button class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#formModal">
+                  Add Task
+                </button>
               </div>
             </div>
           </div>
