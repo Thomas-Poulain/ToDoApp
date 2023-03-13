@@ -136,16 +136,7 @@ createApp({
         //return if the current taks is completed or not
         isCompleted(task) {
             return task.completed;
-        },
-        test: function(){
-            this.tasks.push({id:1, desc: "TEST", dateStart: "2022-22-22", dateEnd: "2022-22-22", progress: "TODO", priority: "Low priority", completed: false})
-        }
-
-
-
-
-
-        
+        } 
     }, 
     //Watch will keep an eye over the tasks array, and will log in the local storage every changes.
     watch: {
@@ -164,3 +155,7 @@ createApp({
                 this.tasks = JSON.parse(localStorage.getItem('tasks'));
     }
 }).mount('.app')
+
+$('#prefill').datepicker({
+
+});

@@ -30,17 +30,21 @@
               Description:
               <input type="text" id="desc" required v-model="desc"><br>
               Start date:
-              <input type="date" id="start" required v-model="dateStart"><br>
+              <div class="md-form md-outline input-with-post-icon datepicker" id="prefill">
+                <input placeholder="Select date" type="text" id="prefill-example" class="form-control">
+                <label for="prefill-example">Try me...</label>
+                <i class="fas fa-calendar input-prefix" tabindex=0></i>
+              </div>
               End date:
-              <input type="date" id="end" required v-model="dateEnd"><br>
+              <input type="date" class="fa fa-calendar" required v-model="dateEnd"><br>
               Priority:
-              <select name="priority" id ="pioritySelect" v-model="priority">
-                <option value="Low priority">Low Priority</option>
+              <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priority">
+                <option selected value="Low priority">Low Priority</option>
                 <option value="Medium priority">Medium Priority</option>
                 <option value="High priority">High Priority</option>
               </select><br>
               Progress:
-              <select name="progress" id ="progressSelect" v-model="progress">
+              <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progress">
                 <option selected value="TODO">TODO</option>
                 <option value="In progress">In progress</option>
                 <option value="Closed">Closed</option>
@@ -54,98 +58,109 @@
         </div>
       </div>
     </div>
-      
-      <div class="justify-content-center container-fluid">
-          <div class="col-20">
-            <div class="card-hover-shadow-2x card rounded">
-              <div class="widget-content">
-                <div class="card-header-tab card-header widget-content-wrapper">
+
+    <!--The todoList-->  
+      <div id="todoList" class="justify-content-center container-fluid">
+        <div class="card-hover-shadow-2x card rounded">
+          <div class="container">
+            <div class="card-header-tab card-header widget-content-wrapper">
+              <div class="row">
+                <div class="col">
                   <div class="col-xs-2 card-header-title font-size-lg text-capitalize font-weight-normal">
                     <i class="fa fa-tasks"></i>&nbsp;Task List
                   </div>
-                  <div class="widget-content-left col-7">
-                    <select name="progress" id ="progressSelect" v-model="progressFilter">
-                      <option value=""></option>
-                      <option value="In progress">In progress</option>
-                      <option value="TODO">TODO</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                    
-                    <select name="priority" id ="pioritySelect" v-model="priorityFilter">
-                      <option value=""></option>
-                      <option value="Low priority">Low Priority</option>
-                      <option value="Medium priority">Medium Priority</option>
-                      <option value="High priority">High Priority</option>
-                    </select>
-                    <input type="text" v-model="dateFilter" placeholder="Date">
-                    <input type="text" v-model="keywordFilter" placeholder="Keyword">
-
-                  </div>
-                  <div class="widget-content-right">
-                    <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
-                      Closed
-                      <i class="fa fa-trash"></i>
-                    </button>
-                    <button class="border-0 btn-transition btn btn-outline-danger"  @click="deleteAll">
-                      All
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
                 </div>
-              </div>
-
-              <!---Template card-->
-              <div class="scroll-area-sm ">
-                <perfect-scrollbar class="ps-show-limits">
-                  <div style="position: static;" class="ps ps--active-y">
-                    <div class="ps-content">
-                      <ul class=" list-group list-group-flush">
-
-                        <!---Template task-->
-                        <li v-for="task in filters" :key="task.id" class="list-group-item">
-                          <div :class="chgProgressColor(task)"></div>
-                          <div class="widget-content p-0">
-                            <div class="widget-content-wrapper ">
-                              <div class="widget-content-left col-8">
-                                <div class="">
-                                  {{task.desc}}
-                                  <div :class="chgPriorityColor(task)">{{task.priority}}</div>
-                                </div>
-                                <div class="row">
-                                  Start: {{task.dateStart}} End:{{task.dateEnd}}
-                                </div>
-                              </div>
-                              <div class="widget-content-right">
-                                <button class="border-0 btn-transition btn btn-outline-success" @click="toggleProgress(task)">
-                                  <i class="fa fa-refresh"></i>
-                                  Status
-                                </button>
-                                <button class="border-0 btn-transition btn btn-outline-warning" @click="togglePriority(task)">
-                                  <i class="fa fa-refresh"></i>
-                                  Priority
-                                </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger"  @click="removeTask(task)">
-                                  <i class="fa fa-trash"></i>
-                                  Delete
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>  
-                  </div>
-                </perfect-scrollbar>
-              </div>
-              <div class="d-block text-right card-footer">
-                    <!-- Button trigger modal -->
-                <button class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#formModal">
-                  Add Task
-                </button>
-              </div>
+                <!---Filters-->
+                <div class="col">
+                  <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progressFilter">
+                    <option value=""></option>
+                    <option value="In progress">In progress</option>
+                    <option value="TODO">TODO</option>
+                    <option value="Closed">Closed</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priorityFilter">
+                    <option value=""></option>
+                    <option value="Low priority">Low Priority</option>
+                    <option value="Medium priority">Medium Priority</option>
+                    <option value="High priority">High Priority</option>
+                  </select>
+                </div>
+                <div class="col">
+                  <input type="text" v-model="dateFilter" placeholder="Date">
+                </div>
+                <div class="col">
+                  <input type="text" v-model="keywordFilter" placeholder="Keyword">
+                </div>
+                <!---Buttons-->
+                <div class="col">
+                  <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
+                    Closed
+                  <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+                <div class="col">
+                  <button class="border-0 btn-transition btn btn-outline-danger"  @click="deleteAll">
+                    All
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>  
             </div>
           </div>
+
+          <!---Template card-->
+          <div class="scroll-area-sm ">
+            <perfect-scrollbar class="ps-show-limits">
+              <div style="position: static;" class="ps ps--active-y">
+                <div class="ps-content">
+                  <ul class=" list-group list-group-flush">
+
+                    <!---Template task-->
+                    <li v-for="task in filters" :key="task.id" class="list-group-item">
+                      <div :class="chgProgressColor(task)"></div>
+                      <div class="widget-content p-0">
+                        <div class="widget-content-wrapper ">
+                          <div class="widget-content-left col-8">
+                            <div class="">
+                              {{task.desc}}
+                              <div :class="chgPriorityColor(task)">{{task.priority}}</div>
+                            </div>
+                            <div class="row">
+                              Start: {{task.dateStart}} End:{{task.dateEnd}}
+                            </div>
+                          </div>
+                          <div class="widget-content-right">
+                            <button class="border-0 btn-transition btn btn-outline-success" @click="toggleProgress(task)">
+                              <i class="fa fa-refresh"></i>
+                              Status
+                            </button>
+                            <button class="border-0 btn-transition btn btn-outline-warning" @click="togglePriority(task)">
+                              <i class="fa fa-refresh"></i>
+                              Priority
+                            </button>
+                            <button class="border-0 btn-transition btn btn-outline-danger"  @click="removeTask(task)">
+                              <i class="fa fa-trash"></i>
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>  
+              </div>
+            </perfect-scrollbar>
+          </div>
+          <div class="d-block text-right card-footer">
+                <!-- Button trigger modal -->
+            <button class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#formModal">
+              Add Task
+            </button>
+          </div>
         </div>
+      </div>
     </div>
   </body>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
