@@ -14,102 +14,108 @@
   </head>
 
   <body>
-    <div class="app justify-content-center container">  
-
-
-    <!-- Modal: Deal with the adding task popup -->
-    <div class="modal fade" id="formModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">New task</h5>
-            <button class="btn-close" data-mdb-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <form>
-              Description:
-              <input type="text" id="desc" required v-model="desc"><br>
-              Start date:
-              <div class="md-form md-outline input-with-post-icon datepicker" id="prefill">
-                <input placeholder="Select date" type="text" id="prefill-example" class="form-control">
-                <label for="prefill-example">Try me...</label>
-                <i class="fas fa-calendar input-prefix" tabindex=0></i>
-              </div>
-              End date:
-              <input type="date" class="fa fa-calendar" required v-model="dateEnd"><br>
-              Priority:
-              <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priority">
-                <option selected value="Low priority">Low Priority</option>
-                <option value="Medium priority">Medium Priority</option>
-                <option value="High priority">High Priority</option>
-              </select><br>
-              Progress:
-              <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progress">
-                <option selected value="TODO">TODO</option>
-                <option value="In progress">In progress</option>
-                <option value="Closed">Closed</option>
-              </select>
-            </form>         
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
-            <button class="btn btn-primary" @click.prevent="addTask" data-mdb-dismiss="modal">Add task</button>
+    <div class="col-xs-2 card-header-title font-size-lg text-capitalize font-weight-normal text-white text-center mt-4">
+      <h3 class="center">AgileZen</h3>
+    </div>
+    <div class="app">
+      <!-- Modal: Deal with the adding task popup -->
+      <div class="modal fade" id="formModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">New task</h5>
+              <button class="btn-close" data-mdb-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="col">
+                  <div class="col mb-4">
+                    Description:
+                    <input type="text" class="rounded-pill" id="desc" required v-model="desc">
+                  </div>
+                  <div class="col mb-4">
+                    Start date:
+                    <input type="date" class="rounded-pill" required v-model="dateStart">
+                  </div>
+                  <div class="col mb-4">
+                    End date:
+                    <input type="date" class="rounded-pill" required v-model="dateEnd">
+                  </div>
+                  <div class="col mb-4">
+                    Priority:
+                    <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priority">
+                      <option selected value="Low priority">Low Priority</option>
+                      <option value="Medium priority">Medium Priority</option>
+                      <option value="High priority">High Priority</option>
+                    </select>
+                  </div>
+                  <div class="col mb-4">
+                    Progress:
+                    <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progress">
+                      <option selected value="TODO">TODO</option>
+                      <option value="In progress">In progress</option>
+                      <option value="Closed">Closed</option>
+                    </select>
+                  </div>
+                </div>          
+              </form>         
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-mdb-dismiss="modal">Close</button>
+              <button class="btn btn-primary" @click.prevent="addTask" data-mdb-dismiss="modal">Add task</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!--The todoList-->  
-      <div id="todoList" class="justify-content-center container-fluid">
-        <div class="card-hover-shadow-2x card rounded">
-          <div class="container">
-            <div class="card-header-tab card-header widget-content-wrapper">
-              <div class="row">
-                <div class="col">
-                  <div class="col-xs-2 card-header-title font-size-lg text-capitalize font-weight-normal">
-                    <i class="fa fa-tasks"></i>&nbsp;Task List
-                  </div>
-                </div>
-                <!---Filters-->
-                <div class="col">
-                  <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progressFilter">
-                    <option value=""></option>
-                    <option value="In progress">In progress</option>
-                    <option value="TODO">TODO</option>
-                    <option value="Closed">Closed</option>
-                  </select>
-                </div>
-                <div class="col">
-                  <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priorityFilter">
-                    <option value=""></option>
-                    <option value="Low priority">Low Priority</option>
-                    <option value="Medium priority">Medium Priority</option>
-                    <option value="High priority">High Priority</option>
-                  </select>
-                </div>
-                <div class="col">
-                  <input type="text" v-model="dateFilter" placeholder="Date">
-                </div>
-                <div class="col">
-                  <input type="text" v-model="keywordFilter" placeholder="Keyword">
-                </div>
-                <!---Buttons-->
-                <div class="col">
-                  <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
-                    Closed
-                  <i class="fa fa-trash"></i>
-                  </button>
-                </div>
-                <div class="col">
-                  <button class="border-0 btn-transition btn btn-outline-danger"  @click="deleteAll">
-                    All
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </div>
-              </div>  
+      <!-- The toDO list-->
+      <div class="card card-hover-shadow-2x card rounded">
+        <div class="card d-flex flex-column justify-content-around card-header-tab card-header widget-content-wrapper">
+          <!---Filters-->
+          <div class="d-flex flex-row flex-wrap">
+            <!---Filters-->
+            <div class="col-2">
+              <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progressFilter">
+                <option value=""></option>
+                <option value="In progress">In progress</option>
+                <option value="TODO">TODO</option>
+                <option value="Closed">Closed</option>
+              </select>
             </div>
+            <div class="col-2">
+              <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priorityFilter">
+                <option value=""></option>
+                <option value="Low priority">Low Priority</option>
+                <option value="Medium priority">Medium Priority</option>
+                <option value="High priority">High Priority</option>
+              </select>
+            </div>
+            <div class="col">
+              <input type="text" v-model="dateFilter" placeholder="Date">
+            </div>
+            <div class="col">
+              <input type="text" v-model="keywordFilter" placeholder="Keyword">
+            </div>
+            <!---Buttons-->
+            <div class="col">
+              <div class="row">
+                <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
+                  Closed
+                <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col">
+              <div class="row">
+                <button class="border-0 btn-transition btn btn-outline-danger"  @click="deleteAll">
+                  All
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </div> 
           </div>
-
+        </div>
+        <div class="d-flex flex-column justify-content-around flex-nowrap">
           <!---Template card-->
           <div class="scroll-area-sm ">
             <perfect-scrollbar class="ps-show-limits">
@@ -158,13 +164,11 @@
             <button class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#formModal">
               Add Task
             </button>
-          </div>
         </div>
       </div>
     </div>
+
   </body>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script type="text/javascript" src="src/js/toDoList.js"></script>
 </html>
-
-

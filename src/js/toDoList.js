@@ -156,6 +156,3 @@ createApp({
     }
 }).mount('.app')
 
-$('#prefill').datepicker({
-
-});
