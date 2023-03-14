@@ -99,10 +99,11 @@ createApp({
             }
         },
         chgProgressColor: function(task){
+            console.log("etett")
             return {
-                'todo-indicator bg-warning': task.progress == "In progress",
-                'todo-indicator bg-success': task.progress == "Closed",
-                'todo-indicator bg-danger': task.progress == "TODO"
+                'todo-indicator text-warning': task.progress == "In progress",
+                'todo-indicator text-success': task.progress == "Closed",
+                'todo-indicator text-danger': task.progress == "TODO"
             }
         },
         toggleProgress: function(task){
