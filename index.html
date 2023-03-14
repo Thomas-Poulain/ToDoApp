@@ -31,15 +31,15 @@
                 <div class="col">
                   <div class="col mb-4">
                     Description:
-                    <input type="text" class="rounded-pill" id="desc" required v-model="desc">
+                    <input type="text" class="rounded-pill" id="desc" v-model="desc" required>
                   </div>
                   <div class="col mb-4">
                     Start date:
-                    <input type="date" class="rounded-pill" required v-model="dateStart">
+                    <input type="date" class="rounded-pill" v-model="dateStart" required>
                   </div>
                   <div class="col mb-4">
                     End date:
-                    <input type="date" class="rounded-pill" required v-model="dateEnd">
+                    <input type="date" class="rounded-pill" v-model="dateEnd" required>
                   </div>
                   <div class="col mb-4">
                     Priority:
@@ -73,22 +73,21 @@
         <div class="card d-flex flex-column justify-content-around card-header-tab card-header widget-content-wrapper">
           <!---Filters-->
           <div class="d-flex flex-row flex-wrap">
-            <!---Filters-->
-            <div class="col-2">
-              <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progressFilter">
-                <option value=""></option>
-                <option value="In progress">In progress</option>
-                <option value="TODO">TODO</option>
-                <option value="Closed">Closed</option>
-              </select>
-            </div>
-            <div class="col-2">
-              <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priorityFilter">
-                <option value=""></option>
-                <option value="Low priority">Low Priority</option>
-                <option value="Medium priority">Medium Priority</option>
-                <option value="High priority">High Priority</option>
-              </select>
+              <div class="col-2">
+                <select name="progress" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="progressFilter">
+                  <option value=""></option>
+                  <option value="In progress">In progress</option>
+                  <option value="TODO">TODO</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
+              <div class="col-2">
+                <select name="priority" class="form-select form-select-sm" aria-label=".form-select-sm example" v-model="priorityFilter">
+                  <option value=""></option>
+                  <option value="Low priority">Low Priority</option>
+                  <option value="Medium priority">Medium Priority</option>
+                  <option value="High priority">High Priority</option>
+                </select>
             </div>
             <div class="col">
               <input type="text" v-model="dateFilter" placeholder="Date">
@@ -97,21 +96,20 @@
               <input type="text" v-model="keywordFilter" placeholder="Keyword">
             </div>
             <!---Buttons-->
-            <div class="col">
-              <div class="row">
+              <div class="d-flex flex-row">
                 <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
                   Closed
                 <i class="fa fa-trash"></i>
                 </button>
-              </div>
-            </div>
-            <div class="col">
-              <div class="row">
                 <button class="border-0 btn-transition btn btn-outline-danger"  @click="deleteAll">
                   All
                   <i class="fa fa-trash"></i>
                 </button>
               </div>
+              <!-- Button trigger modal -->
+              <button class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#formModal">
+                Add Task
+              </button>
             </div> 
           </div>
         </div>
@@ -129,12 +127,12 @@
                       <div class="widget-content p-0">
                         <div class="widget-content-wrapper ">
                           <div class="widget-content-left col-8">
-                            <div class="">
+                            <div :class="chgPriorityColor(task)">{{task.priority}}</div>
+                            <div class="d-flex flex-wrap">
                               {{task.desc}}
-                              <div :class="chgPriorityColor(task)">{{task.priority}}</div>
                             </div>
                             <div class="row">
-                              Start: {{task.dateStart}} End:{{task.dateEnd}}
+                              Start: {{task.dateStart}} - End: {{task.dateEnd}}
                             </div>
                           </div>
                           <div class="widget-content-right">
@@ -159,12 +157,6 @@
               </div>
             </perfect-scrollbar>
           </div>
-          <div class="d-block text-right card-footer">
-                <!-- Button trigger modal -->
-            <button class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#formModal">
-              Add Task
-            </button>
-        </div>
       </div>
     </div>
 
