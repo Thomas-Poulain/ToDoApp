@@ -4,6 +4,9 @@ createApp({
     data() {
         return {
             tasks: [],
+            desc: "Description",
+            dateStart: new Date(),
+            dateEnd: new Date(),
             priority:"Low priority",
             progress: "TODO",
             progressFilter : "",

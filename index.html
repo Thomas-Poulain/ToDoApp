@@ -31,11 +31,11 @@
                 <div class="col">
                   <div class="col mb-4">
                     Description:
-                    <input type="text" class="rounded-pill" id="desc" v-model="desc" required>
+                    <input type="text" class="rounded-pill" id="desc" v-model="desc" required="required">
                   </div>
                   <div class="col mb-4">
                     Start date:
-                    <input type="date" class="rounded-pill" v-model="dateStart" required>
+                    <input type="date" class="rounded-pill" v-model="dateStart" required="required">
                   </div>
                   <div class="col mb-4">
                     End date:
@@ -97,7 +97,7 @@
             </div>
             <!---Buttons-->
               <div class="d-flex flex-row">
-                <button class="border-0 btn-transition btn btn-outline-warning"  @click="removeCompleted">
+                <button class="border-0 btn-transition btn btn-outline-success"  @click="removeCompleted">
                   Closed
                 <i class="fa fa-trash"></i>
                 </button>
@@ -142,7 +142,7 @@
                             </button>
                             <button class="border-0 btn-transition btn btn-outline-warning" @click="togglePriority(task)">
                               <i class="fa fa-refresh"></i>
-                              Priority
+                              Weight
                             </button>
                             <button class="border-0 btn-transition btn btn-outline-danger"  @click="removeTask(task)">
                               <i class="fa fa-trash"></i>

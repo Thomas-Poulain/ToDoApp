@@ -5,8 +5,8 @@ html, body {
   margin : 0;
 }
 .app{
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 10%;
+    margin-right: 10%;
     margin-top: 5%;
 }
 
@@ -17,7 +17,7 @@ html, body {
     }
 
     .scroll-area-sm {
-        height: 650px;
+        height: 500px;
         overflow-x: hidden;
     }
   }
@@ -33,7 +33,7 @@ body {
     text-align: left;
     background: linear-gradient(-45deg, #090170, #9f21ff, #090170);
     background-size: 400% 400%;
-    animation: gradient 20s ease infinite;
+    animation: gradient 15s ease infinite;
     overflow: hidden;
 }
 
@@ -55,7 +55,7 @@ i {
 }
 
 .scroll-area-sm {
-    height: 1000px;
+    height: 45em;
     overflow-x: hidden;
 }
 
